@@ -1,16 +1,19 @@
 import os
 import runpod
-from model_loader import load_model
-from audio_utils import wav_to_base64
 
+from .model_loader import load_model
+from .audio_utils import wav_to_base64
+
+# 모델 1회 로드 (장시간 송출 안정)
 model = load_model()
 
-SPEAKER_DIR = "/runpod-volume/speakers"  # 또는 ./speakers
+BASE_DIR = os.path.dirname(__file__)
+SPEAKER_DIR = os.path.join(BASE_DIR, "speakers")
 
 LANG_SPEAKERS = {
-    "ko": f"{SPEAKER_DIR}/ko.wav",
-    "en": f"{SPEAKER_DIR}/en.wav",
-    "ja": f"{SPEAKER_DIR}/ja.wav",
+    "ko": os.path.join(SPEAKER_DIR, "ko.wav"),
+    "en": os.path.join(SPEAKER_DIR, "en.wav"),
+    "ja": os.path.join(SPEAKER_DIR, "ja.wav"),
 }
 
 def handler(event):
@@ -31,7 +34,8 @@ def handler(event):
         temperature=0.7,
         repetition_penalty=5.0,
         top_k=50,
-        top_p=0.85
+        top_p=0.85,
+        length_penalty=1.0
     )
 
     return {
