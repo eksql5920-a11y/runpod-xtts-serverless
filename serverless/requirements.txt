@@ -1,4 +1,5 @@
+runpod
 TTS
 torch
 soundfile
-runpod
+numpy
