@@ -1,9 +1,10 @@
 import base64
 import runpod
-from model_loader import load_model
-from audio_utils import wav_to_base64
 
-# 모델은 워커 시작 시 1번만 로드됨
+from .model_loader import load_model
+from .audio_utils import wav_to_base64
+
+# 모델은 워커 시작 시 1번만 로드
 model = load_model()
 
 def handler(event):
@@ -15,6 +16,7 @@ def handler(event):
         "speaker_wav": null
     }
     """
+
     input_data = event.get("input", {})
 
     text = input_data.get("text", "")
@@ -24,16 +26,18 @@ def handler(event):
     if not text:
         return {"error": "text is required"}
 
-    wav_path = model.tts(
+    # TTS 생성
+    wav = model.tts(
         text=text,
         language=language,
         speaker_wav=speaker_wav
     )
 
-    audio_base64 = wav_to_base64(wav_path)
+    audio_base64 = wav_to_base64(wav)
 
     return {
         "audio": audio_base64
     }
 
+# ⭐⭐⭐ 이 줄이 제일 중요 ⭐⭐⭐
 runpod.serverless.start({"handler": handler})
