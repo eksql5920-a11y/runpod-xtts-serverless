@@ -1,0 +1,3 @@
+# RunPod XTTS Serverless
+
+XTTS v2 serverless TTS endpoint using RunPod.
