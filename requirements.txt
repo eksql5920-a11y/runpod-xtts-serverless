@@ -1,0 +1,4 @@
+TTS
+torch
+soundfile
+runpod
